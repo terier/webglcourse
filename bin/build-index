@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+
+const doc = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebGL course</title>
+</head>
+<body>
+    <ul>
+%%
+    </ul>
+</body>
+</html>
+`;
+
+const sources = process.argv.slice(2).sort();
+const links = sources.map(x => `<li><a href="${x}/index.html">${x}</a></li>`);
+console.log(doc.replace(/%%/, links.join('\n')));
