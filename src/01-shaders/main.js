@@ -1,4 +1,5 @@
 //@@../../shared/js/common.js
+//@@../../shared/js/WebGLUtils.js
 
 function load() {
     canvas = document.querySelector('canvas');
