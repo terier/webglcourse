@@ -6,7 +6,7 @@ var timeStart;
 
 function load() {
     canvas = document.querySelector('canvas');
-    gl = canvas.getContext('webgl');
+    gl = WebGLUtils.getContext(canvas, ['webgl', 'experimental-webgl']);
 
     var programs = WebGLUtils.compileShaders(gl, {
         test: {

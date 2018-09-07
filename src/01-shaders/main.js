@@ -2,7 +2,7 @@
 
 function load() {
     canvas = document.querySelector('canvas');
-    gl = canvas.getContext('webgl');
+    gl = WebGLUtils.getContext(canvas, ['webgl', 'experimental-webgl']);
 
     var vertexShader = gl.createShader(gl.VERTEX_SHADER);
     gl.shaderSource(vertexShader, vertexShaderSource);
