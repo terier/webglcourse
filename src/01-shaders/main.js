@@ -1,33 +1,39 @@
 //@@../../shared/js/common.js
 //@@../../shared/js/WebGLUtils.js
 
+var program;
+var startTime = Date.now();
+
 function load() {
     canvas = document.querySelector('canvas');
     gl = WebGLUtils.getContext(canvas, ['webgl', 'experimental-webgl']);
 
-    var vertexShader = gl.createShader(gl.VERTEX_SHADER);
-    gl.shaderSource(vertexShader, vertexShaderSource);
-    gl.compileShader(vertexShader);
-    var success = gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS);
-    if (!success) {
-        throw new Error('Could not compile vertex shader:\n' + gl.getShaderInfoLog(vertexShader));
-    }
+    var vertexShader = WebGLUtils.createShader(gl, vertexShaderSource, gl.VERTEX_SHADER);
+    var fragmentShader = WebGLUtils.createShader(gl, fragmentShaderSource, gl.FRAGMENT_SHADER);
+    program = WebGLUtils.createProgram(gl, [vertexShader, fragmentShader]);
 
-    var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
-    gl.shaderSource(fragmentShader, fragmentShaderSource);
-    gl.compileShader(fragmentShader);
-    success = gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS);
-    if (!success) {
-        throw new Error('Could not compile fragment shader:\n' + gl.getShaderInfoLog(fragmentShader));
-    }
+    gl.useProgram(program.program);
 
-    var program = gl.createProgram();
-    gl.attachShader(program, vertexShader);
-    gl.attachShader(program, fragmentShader);
-    gl.linkProgram(program);
-    success = gl.getProgramParameter(program, gl.LINK_STATUS);
-    if (!success) {
-        throw new Error('Could not link program:\n' + gl.getProgramInfoLog(program));
+    var buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+
+    var data = new Float32Array([
+        -1, -1, 0, 1,
+        1, -1, 0, 1,
+        0, 1, 0, 1
+    ]);
+
+    gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+
+    gl.enableVertexAttribArray(program.attributes.aPosition);
+    gl.vertexAttribPointer(program.attributes.aPosition, 4, gl.FLOAT, false, 0, 0);
+}
+
+function animate() {
+    if (gl) {
+        var t = (Date.now() - startTime) * 0.005;
+        gl.uniform4f(program.uniforms.uColor, Math.abs(Math.cos(t)), 0.0, 0.0, 1.0);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
     }
 }
 
@@ -42,7 +48,9 @@ void main() {
 var fragmentShaderSource = `
 precision mediump float;
 
+uniform vec4 uColor;
+
 void main() {
-    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+    gl_FragColor = uColor;
 }
 `.trim();

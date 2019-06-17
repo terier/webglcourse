@@ -1,11 +1,16 @@
 //@@../../shared/js/common.js
+//@@../../shared/js/WebGLUtils.js
 
 function load() {
     canvas = document.querySelector('canvas');
-    gl = canvas.getContext('webgl');
-    gl.clearColor(0.5, 0.7, 0.9, 1.0);
+    gl = WebGLUtils.getContext(canvas, ['webgl', 'experimental-webgl'], {
+        alpha: false
+    });
 }
 
 function animate() {
-    gl.clear(gl.COLOR_BUFFER_BIT);
+    if (gl) {
+        gl.clearColor(Math.random(), 0.0, 0.0, 1.0);
+        //gl.clear(gl.COLOR_BUFFER_BIT);
+    }
 }

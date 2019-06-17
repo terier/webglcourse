@@ -44,22 +44,12 @@ function load() {
     uTime = programs.test.uniforms.uTime;
     timeStart = Date.now();
 
-    var image = new Image();
-    image.addEventListener('load', function() {
-        texture = gl.createTexture();
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-        gl.activeTexture(gl.TEXTURE0);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-        gl.generateMipmap(gl.TEXTURE_2D);
-
-        uTexture = programs.test.uniforms.uTexture;
-    });
-    image.src = 'cat.jpg';
+    // load image, active tex, bind, upload, mipmaps
 }
 
 function animate() {
     if (gl && texture) {
-        gl.uniform1i(uTexture, 0);
+        // texture uniform
         gl.uniform1f(uTime, (Date.now() - timeStart) * 0.005);
         gl.drawArrays(gl.TRIANGLES, 0, 3);
     }
@@ -88,9 +78,10 @@ precision mediump float;
 varying vec4 vColor;
 varying vec2 vTexCoord;
 
-uniform sampler2D uTexture;
+// sampler
 
 void main() {
-    gl_FragColor = texture2D(uTexture, vTexCoord) * vColor;
+    // color
+    gl_FragColor = vec4(0.0);
 }
 `.trim();

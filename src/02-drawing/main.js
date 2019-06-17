@@ -13,24 +13,14 @@ function load() {
     });
     gl.useProgram(programs.test.program);
 
-    var data = new Float32Array([
-        -0.5, -0.5, 0.0, 1.0,
-        0.5, -0.5, 0.0, 1.0,
-        0.0, 0.5, 0.0, 1.0
-    ]);
+    // create position data & buffer
 
-    var buffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
-
-    var aPosition = programs.test.attributes.aPosition;
-    gl.enableVertexAttribArray(aPosition);
-    gl.vertexAttribPointer(aPosition, 4, gl.FLOAT, false, 0, 0);
+    // create attribute
 }
 
 function animate() {
     if (gl) {
-        gl.drawArrays(gl.TRIANGLES, 0, 3);
+        // draw!
     }
 }
 
